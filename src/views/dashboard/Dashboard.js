@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   CAvatar,
@@ -54,7 +54,13 @@ import avatar6 from '../../../public//assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 
+import { getWines } from '../../../lib/api/wines'
+
 const Dashboard = () => {
+  const [winesDB, setWinesDB] = useState([])
+  useEffect(()=>{
+    getWinesFromApi();
+  },[])
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
   const progressExample = [
@@ -86,6 +92,7 @@ const Dashboard = () => {
     { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
     { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
   ]
+
 
   const tableExample = [
     {
@@ -177,6 +184,10 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
+  const getWinesFromApi =async ()=>{
+    setWinesDB(await getWines());
+  }
+  
 
   return (
     <>
@@ -186,7 +197,7 @@ const Dashboard = () => {
           <CRow>
             <CCol sm={5}>
               <h4 id="traffic" className="card-title mb-0">
-                Traffic
+                Traffic - {winesDB.map((wine) => (wine.name + ' - '))}
               </h4>
               <div className="small text-medium-emphasis">January - July 2021</div>
             </CCol>
